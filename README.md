@@ -1,23 +1,19 @@
 # pfSense OpenVPN Remote Access Lab
 
-## Overview
+A documented pfSense OpenVPN remote-access lab focused on authenticated VPN access, network segmentation, DNS delivery, firewall controls, and configuration evidence.
 
-This project documents a pfSense OpenVPN Remote Access (User Auth) lab configured in a TestOut-style network environment.
+## Lab Objectives
 
-The repository is organized so that each major configuration step has corresponding screenshot evidence in [screenshots/](screenshots/) and a direct explanation in [docs/evidence-index.md](docs/evidence-index.md).
-
-## Objectives
-
-- Configure certificate infrastructure for the VPN server.
-- Configure pfSense for authenticated OpenVPN remote access.
+- Configure a certificate authority and OpenVPN server certificate.
+- Configure pfSense for OpenVPN Remote Access with local user authentication.
 - Define a dedicated VPN tunnel network and internal network.
-- Configure DNS delivery to VPN clients.
-- Apply WAN and OpenVPN firewall controls.
-- Document the configuration as portfolio evidence.
+- Provide DNS settings to VPN clients.
+- Apply firewall controls for VPN service access and tunneled traffic.
+- Organize configuration screenshots as portfolio evidence.
 
-## Architecture
+## Network Overview
 
-```
+```text
 Remote VPN User
       |
       | Username / Password
@@ -33,98 +29,83 @@ VPN Tunnel: 198.28.20.0/24
 Internal Network: 198.28.56.18
 ```
 
+## Configuration Summary
+
+| Area | Configuration |
+|---|---|
+| VPN mode | Remote Access (User Auth) |
+| Authentication | Local Database |
+| Interface | WAN |
+| Protocol | UDP, IPv4 only |
+| Port | 1194 |
+| Device mode | TUN / Layer 3 |
+| VPN description | CorpNet-VPN |
+| Tunnel network | `198.28.20.0/24` |
+| Internal network | `198.28.56.18` |
+| DNS server | `198.28.56.1` |
+| Concurrent connections | 4 |
+| Redirect Gateway | Disabled |
+| Inter-client communication | Disabled |
+
+The documented concurrent-connection setting is **4**. The available tunnel screenshot was captured before the final value was visible, so that screenshot is retained as historical configuration evidence rather than used to establish the final connection limit.
+
 ## Certificate Configuration
 
-- Certificate Authority: CorpNet-CA
-- Server certificate: CorpNet
-- Country: GB
-- State/Province: Cambridgeshire
-- Locality: Woodwalton
-- Organization: CorpNet
+- Certificate Authority: `CorpNet-CA`
+- Server certificate: `CorpNet`
+- Country: `GB`
+- State/Province: `Cambridgeshire`
+- Locality: `Woodwalton`
+- Organization: `CorpNet`
 
 Evidence: [01-server-certificate.png](screenshots/01-server-certificate.png)
-## OpenVPN Server Configuration
 
-- Mode: Remote Access (User Auth)
-- Authentication backend: Local Database
-- Interface: WAN
-- Protocol: UDP on IPv4 only
-- Port: 1194
-- Description: CorpNet-VPN
-- Device mode: TUN / Layer 3
+## Firewall Controls
 
-Evidence:
-- [02-openvpn-server-setup.png](screenshots/02-openvpn-server-setup.png)
-- [06-openvpn-server-final.png](screenshots/06-openvpn-server-final.png)
+The lab configured two firewall controls through the OpenVPN setup workflow:
 
-## Network and Client Configuration
+1. A rule permitting clients to connect to the OpenVPN server.
+2. An OpenVPN rule permitting authenticated clients to pass traffic through the VPN tunnel.
 
-- Tunnel network: 198.28.20.0/24
-- Local network: 198.28.56.18
-- DNS Server 1: 198.28.56.1
-- Redirect Gateway: disabled
-- Inter-client communication: disabled
-
-Evidence:
-- [03-tunnel-settings.png](screenshots/03-tunnel-settings.png)
-- [04-client-dns-settings.png](screenshots/04-client-dns-settings.png)
-
-- Concurrent connections: 4
-
-The captured tunnel screenshot does not show the final configured concurrent-connection value, so the documented value of 4 is retained as the lab configuration rather than being inferred from that screenshot.
+Evidence: [05-firewall-rules.png](screenshots/05-firewall-rules.png)
 
 ## User Authentication
 
-Two local VPN users are shown in pfSense User Manager:
+The pfSense User Manager screenshot shows two local VPN accounts:
 
-- blindley
-- jphillips
+- `blindley`
+- `jphillips`
+
+Passwords are intentionally excluded.
 
 Evidence: [07-vpn-users.png](screenshots/07-vpn-users.png)
-
-Passwords are intentionally omitted from the repository.
-## Firewall Configuration
-
-The lab includes:
-
-1. A firewall rule allowing clients to connect to the OpenVPN server.
-2. An OpenVPN rule allowing connected clients to pass traffic through the VPN tunnel.
-
-Evidence: [05-firewall-rules.png](screenshots/05-firewall-rules.png)
 
 ## Security Concepts Demonstrated
 
 - Certificate-based server identity
-- Local VPN user authentication
+- Local VPN authentication
 - Network segmentation
-- Remote-access VPN architecture
+- Layer 3 VPN tunneling
 - Firewall access control
 - DNS configuration for remote clients
-- Layer 3 VPN tunneling
 - Separation of VPN service access from tunneled traffic
 
 ## Verification Scope
 
-The screenshots document the server-side configuration and final settings. They do not claim end-to-end OpenVPN client connectivity because a dedicated OpenVPN client validation was not captured for this lab.
+The repository documents the server-side configuration and captured lab evidence. It does **not** claim successful end-to-end OpenVPN client connectivity because a dedicated client-connectivity validation was not captured.
 
 ## Documentation
 
-- [Evidence Index](docs/evidence-index.md) — screenshot-by-screenshot mapping
-- [Configuration Notes](docs/configuration-notes.md) — technical explanation and network flow
-- [Resume Entry](docs/resume-entry.md) — concise resume-ready project description
+- [Evidence Index](docs/evidence-index.md) — maps each retained screenshot to the configuration it demonstrates.
+- [Configuration Notes](docs/configuration-notes.md) — provides the technical walkthrough and network flow.
+- [Resume Entry](docs/resume-entry.md) — concise resume-ready project bullets.
 
-## Resume Entry
-
-**pfSense OpenVPN Remote Access Lab**
-- Configured pfSense as an OpenVPN Remote Access (User Auth) gateway using WAN, UDP/IPv4, local authentication, and a dedicated VPN tunnel network.
-- Created a certificate authority/server certificate hierarchy and configured VPN addressing, internal network routing, and DNS for remote clients.
-- Implemented WAN and OpenVPN firewall rules to control access to the VPN service and traffic traversing the authenticated tunnel.
-- Configured local VPN users and documented the security architecture, access controls, and network flow.
 ## Repository Structure
 
-```
+```text
 Remote-VPN-config/
 ├── README.md
+├── .gitignore
 ├── docs/
 │   ├── configuration-notes.md
 │   ├── evidence-index.md
