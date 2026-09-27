@@ -69,7 +69,9 @@ Evidence:
 - [03-tunnel-settings.png](screenshots/03-tunnel-settings.png)
 - [04-client-dns-settings.png](screenshots/04-client-dns-settings.png)
 
-The tunnel screenshot shows the concurrent-connections field as 0 at capture time, so this repository does not claim a different final value without screenshot evidence.
+- Concurrent connections: 4
+
+The captured tunnel screenshot does not show the final configured concurrent-connection value, so the documented value of 4 is retained as the lab configuration rather than being inferred from that screenshot.
 
 ## User Authentication
 

@@ -32,7 +32,9 @@ The resulting saved server configuration is shown in [06-openvpn-server-final.pn
 - Inter-client communication: disabled
 - Duplicate connections: disabled
 
-The captured screenshot shows the concurrent-connections field as 0 at the time of capture. The repository therefore does not use that screenshot as evidence for a different final connection limit.
+- Concurrent connections: 4
+
+The captured tunnel screenshot does not show the final configured concurrent-connection value. The documented value of 4 is retained as the lab configuration rather than being inferred from that screenshot.
 
 ## 4. Client configuration
 
